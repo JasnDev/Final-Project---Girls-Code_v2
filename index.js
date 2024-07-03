@@ -1,10 +1,12 @@
 import express from 'express';
-const app = express()
-import { connect } from './db.js';
+import { db } from './db.js';
+import { routers } from './Routes/formRoute.js';
+
+const app = express();
 
 app.get("/", async (req, res) => {
     try {
-        const connection = await connect();
+        const connection = await db();
         const rows = await connection.query("SELECT * FROM cadastro;");
         res.json(rows);
     } catch (error) {
@@ -12,6 +14,12 @@ app.get("/", async (req, res) => {
         res.status(500).json({ error: "Erro interno do servidor" });
     }
 });
+
+app.use(express.static('Forms'));
+app.use(routers);
+
+
+
 
 const PORT = 3306;
 app.listen(PORT, () => {

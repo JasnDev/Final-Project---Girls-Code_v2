@@ -1,7 +1,7 @@
 import mysql from 'mysql2/promise'; 
 import fs from 'fs'
 
-async function connect() {
+async function db (){
     if (global.connection && global.connection.state !== "disconnected")
         return global.connection;
 
@@ -17,7 +17,8 @@ async function connect() {
      return conn;
 }
 
-export { connect };
+
+export { db };
 
 
 
