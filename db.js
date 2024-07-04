@@ -10,7 +10,7 @@ async function db (){
         password:"Admin123", 
         database:"formulario", 
         port:3306,  
-});
+    });
 
     console.log("Conectado ao MySQL!");
      global.connection = conn;
