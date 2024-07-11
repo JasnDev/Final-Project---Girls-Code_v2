@@ -2,6 +2,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
+import bcrypt from 'bcryptjs'
 import { db } from './db.js';
 import { router } from './Routes/formRoute.js';
 
@@ -26,15 +27,16 @@ app.get('/bd', async (req, res) => {
 
 app.post('/form', async (req, res) => {
     try {
-        const { cpf, name, email, password, cep } = req.body;
-
+        const { cpf, name, email, cep } = req.body;
+        const passwordSalt = bcrypt.genSaltSync(1);
+        const passwordCrypt = bcrypt.hashSync(req.body.password, passwordSalt);
         const connection = await db();
         await connection.query(
             'INSERT INTO cadastro (CPF, Nome, Email, Senha, CEP) VALUES (?, ?, ?, ?, ?)',
-            [cpf, name, email, password, cep]
+            [cpf, name, email, passwordCrypt, cep]
         );
-        res.redirect(`/sucess`)
-        
+        res.redirect('/sucess');
+
     } catch (error) {
         console.error('Erro no cadastro:', error);
         res.status(500).json({ error: 'Cadastro não realizado.' });
@@ -44,8 +46,11 @@ app.post('/form', async (req, res) => {
 app.get('/sucess', async(req, res) => {
     const idCad = req.params.id_cadastro;
 
-    await connection.query('SELECT * FROM cadastro WHERE id_cadastro = 1')
+    const result = await connection.query('SELECT * FROM cadastro WHERE id_cadastro = ?', [idCad]);
+    console.log(result)
+    res.json(result)
 });
+
 
 const PORT = 3306;
 app.listen(PORT, () => {
