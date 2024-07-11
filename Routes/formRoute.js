@@ -15,6 +15,11 @@ router.get('/form', (req, res) => {
     res.sendFile(join(__dirname, '../', 'PI---Girls-Code-main', 'form.html'));
 });
 
+router.get(`/sucess/`, (req, res) => {
+    res.sendFile(join(__dirname, '../', 'PI---Girls-Code-main', 'sucess.html'));
+});
+
+
 export { router };
 
 

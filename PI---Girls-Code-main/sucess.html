@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="/index.js"></script>
+    <link rel="stylesheet" href="sucessStyle.css">
+    <title>Sucesso</title>
+</head>
+<body>
+    <h1>SUCESSO NO CADASTRO</h1>
+    <div>
+        <ul id="DadosPessoais">
+            
+        </ul>
+    </div>
+    <script>
+    fetch('/bd')
+        .then(request => response.json())
+        .then(data => {
+            const ulDados = document.getElementById('DadosPessoais');
+            data.forEach(item => {
+                const li = document.createElement('li');
+                li.innerHTML = `
+                    CPF: ${req.body.CPF}<br>
+                    Nome: ${req.body.Nome}<br>
+                    Email: ${req.body.Email}<br>
+                    Senha: ${req.body.Senha}<br>
+                    CEP: ${req.body.CEP}
+                `;
+                ulDados.appendChild(li);
+            });
+        })
+        .catch(error => {
+            console.error('Erro ao buscar dados:', error);
+        });
+    </script>
+</body>
+</html>

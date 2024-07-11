@@ -1,9 +1,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import ejs from 'ejs'
 import { fileURLToPath } from 'url';
-import { dirname } from 'path';
-import path from 'path';
+import { dirname, join } from 'path';
 import { db } from './db.js';
 import { router } from './Routes/formRoute.js';
 
@@ -14,43 +12,39 @@ const app = express();
 app.use(express.static('PI---Girls-Code-main'));
 app.use(router);
 app.use(bodyParser.urlencoded({ extended: false }));
-app.set('view engine', 'ejs')
-app.set('views', path.join(__dirname, 'views'));
 
-
-app.get("/bd", async (req, res) => {
+app.get('/bd', async (req, res) => {
     try {
         const connection = await db();
-        const rows = await connection.query("SELECT * FROM cadastro;");
+        const rows = await connection.query('SELECT * FROM cadastro;');
         res.json(rows);
     } catch (error) {
-        console.error("Erro", error);
-        res.status(500).json({ error: "Erro servidor não iniciado :(" });
+        console.error('Erro', error);
+        res.status(500).json({ error: 'Erro no servidor: não foi possível buscar os dados.' });
     }
 });
-app.post('/form', async (req,res) => {
+
+app.post('/form', async (req, res) => {
     try {
         const { cpf, name, email, password, cep } = req.body;
 
         const connection = await db();
-        const result = await connection.query(
+        await connection.query(
             'INSERT INTO cadastro (CPF, Nome, Email, Senha, CEP) VALUES (?, ?, ?, ?, ?)',
             [cpf, name, email, password, cep]
         );
-        console.log(result)
-        res.redirect(`/sucess/${result.insertId}`)
+        res.redirect(`/sucess`)
+        
     } catch (error) {
         console.error('Erro no cadastro:', error);
-        res.status(500).json({ error: 'cadastro não realizado.' });
+        res.status(500).json({ error: 'Cadastro não realizado.' });
     }
 });
-app.get(`/sucess/:id_cadastro`, async (req, res) =>{
-    const id = req.params.id_cadastro;
 
-    const connection = await db()
-    const dates = await connection.query(`SELECT * FROM cadastro WHERE id_cadastro = ?`, [id]);
+app.get('/sucess', async(req, res) => {
+    const idCad = req.params.id_cadastro;
 
-    res.render('sucess', {dates: dates});
+    await connection.query('SELECT * FROM cadastro WHERE id_cadastro = 1')
 });
 
 const PORT = 3306;
