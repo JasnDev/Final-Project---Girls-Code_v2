@@ -12,11 +12,11 @@ const __dirname = dirname(__filename);
 router.use(bodyParser.urlencoded({ extended: false }));
 
 router.get('/form', (req, res) => {
-    res.sendFile(join(__dirname, '../', 'PI---Girls-Code-main', 'form.html'));
+    res.sendFile(join(__dirname, '../', 'ProjetoGirlsCode-FinalVersion', 'form.html'));
 });
 
 router.get(`/sucess/`, (req, res) => {
-    res.sendFile(join(__dirname, '../', 'PI---Girls-Code-main', 'sucess.html'));
+    res.sendFile(join(__dirname, '../', 'ProjetoGirlsCode-FinalVersion', 'sucess.html'));
 });
 
 

@@ -10,7 +10,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const app = express();
-app.use(express.static('PI---Girls-Code-main'));
+app.use(express.static('ProjetoGirlsCode-FinalVersion'));
 app.use(router);
 app.use(bodyParser.urlencoded({ extended: false }));
 
